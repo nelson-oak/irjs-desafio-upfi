@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { Button, Box } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { useInfiniteQuery } from 'react-query';
@@ -18,13 +19,30 @@ export default function Home(): JSX.Element {
     hasNextPage,
   } = useInfiniteQuery(
     'images',
-    // TODO AXIOS REQUEST WITH PARAM
-    ,
-    // TODO GET AND RETURN NEXT PAGE PARAM
+    ({ pageParam = 0 }) => api.get(`/api/images?after=${pageParam}`),
+    {
+      getNextPageParam: (lastPage, pages) => lastPage.data,
+    }
   );
 
   const formattedData = useMemo(() => {
-    // TODO FORMAT AND FLAT DATA ARRAY
+    if (data) {
+      const cards = [];
+      data.pages.forEach(page => {
+        page.data.data.forEach(register => {
+          cards.push({
+            title: register.title,
+            description: register.description,
+            url: register.url,
+            ts: register.ts,
+            id: register.id,
+          });
+        });
+      });
+
+      return cards;
+    }
+    return [];
   }, [data]);
 
   // TODO RENDER LOADING SCREEN

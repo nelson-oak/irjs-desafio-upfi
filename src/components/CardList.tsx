@@ -37,10 +37,12 @@ export function CardList({ cards }: CardsProps): JSX.Element {
   // TODO FUNCTION HANDLE VIEW IMAGE
   return (
     <>
-      {cards.length &&
-        cards.map(card => (
-          <Card key={card.id} data={card} viewImage={viewImage} />
-        ))}
+      <SimpleGrid columns={3} spacing={5}>
+        {cards.length &&
+          cards.map(card => (
+            <Card key={card.id} data={card} viewImage={viewImage} />
+          ))}
+      </SimpleGrid>
 
       <ModalViewImage
         imgUrl={imgUrl}
